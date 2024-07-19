@@ -1,0 +1,76 @@
+.text-on-image[data-v-5afb46a5] {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: url('./bg-f-D-UKjJ6U.jpg') center center no-repeat;
+  background-size: cover;
+}
+.p1[data-v-5afb46a5] {
+  letter-spacing: 5px;
+  font: normal bold 4vw 'Poppins';
+  mix-blend-mode: color-dodge;
+}
+.p2[data-v-5afb46a5] {
+  font: normal bold 5vw 'Poppins';
+  background: url('./bg-s0FOc6Q3.jpg') center center no-repeat;
+  background-size: cover;
+  /* 将图片按文本范围进行裁剪 */
+  -webkit-background-clip: text;
+  /* 将文字内容设置为透明，从而显示裁切后的图片底色 */
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.gradient-text[data-v-5afb46a5] {
+  font-size: 30pxs;
+  font-weight: bold;
+  background: linear-gradient(90deg, #ff0000, /* 粉红色 */ #0000ff, /* 青色 */ #00ff00, /* 紫色 */ #ff0000, #0000ff, #00ff00, #ff0000);
+  /* 青色 */
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientAnimation-5afb46a5 5s infinite linear;
+}
+@keyframes gradientAnimation-5afb46a5 {
+0% {
+    background-position: 0% 50%;
+}
+100% {
+    background-position: 100% 50%;
+}
+}
+.container[data-v-5afb46a5] {
+  position: relative;
+  width: 100%;
+  text-indent: 20px;
+  line-height: 2;
+  font-size: 18px;
+  margin: 30px auto;
+  background-color: #000;
+  color: #fff;
+}
+.eraser[data-v-5afb46a5] {
+  position: absolute;
+  /* 这里等同于top:0 right:0 bottom:0 left:0 */
+  inset: 0;
+  /*
+        这里解释一下inset属性，inset属性用作定位元素的top、right、bottom 、left这些属性的简写
+        依照的也是上右下左的顺序。
+        例如：inset:1px 2px 等同于 top:1px right:2px bottom:1px left:2px
+    */
+}
+.text[data-v-5afb46a5] {
+  --p: 0%;
+  background: linear-gradient(to right, transparent var(--p), #000000 calc(var(--p) + 30px));
+  color: transparent;
+  animation: erase-5afb46a5 2s linear forwards;
+}
+@property --p {
+  syntax: '<percentage>';
+  initial-value: 0%;
+  inherits: false;
+}
+@keyframes erase-5afb46a5 {
+to {
+    --p: 100%;
+}
+}
