@@ -19,7 +19,9 @@ const api = {
         resolve(arg);
       });
     });
-  }
+  },
+  convertImage: (inputPath, format) => electron.ipcRenderer.invoke("convert-image", { inputPath, format }),
+  openFolder: (folderPath) => electron.ipcRenderer.invoke("open-folder", folderPath)
 };
 if (process.contextIsolated) {
   try {

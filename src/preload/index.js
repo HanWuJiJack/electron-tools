@@ -30,6 +30,8 @@ const api = {
       })
     })
   },
+  convertImage: (inputPath, format) => ipcRenderer.invoke('convert-image', { inputPath, format }),
+  openFolder: (folderPath) => ipcRenderer.invoke('open-folder', folderPath)
 }
 // ipcRenderer.on("ping-res", () => {
 //   console.log(77777)

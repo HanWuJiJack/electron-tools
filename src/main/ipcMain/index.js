@@ -7,9 +7,13 @@ import {
 import {
   ping
 } from "./ping"
+import {
+  convertImage
+} from "./convertImage"
 
 export {
   getProxyList,
   checkProxyList,
-  ping
+  ping, 
+  convertImage
 }

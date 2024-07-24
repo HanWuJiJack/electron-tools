@@ -20,7 +20,8 @@ import {
 import {
   getProxyList,
   ping,
-  checkProxyList
+  checkProxyList,
+  convertImage
 } from "./ipcMain/index"
 
 import menuconfig from './config/menu'
@@ -85,7 +86,19 @@ function createWindow() {
     }
     // console.log("check-proxy-list", list)
   })
+  // 处理图片转换请求
+  ipcMain.handle('convert-image', async (event, { inputPath, format }) => {
+    try {
+      const outputPath = await convertImage({ inputPath, format })
+      return outputPath;
+    } catch (error) {
+      throw new Error('Image conversion failed: ' + error.message);
+    }
+  });
 
+  ipcMain.handle('open-folder', async (event, folderPath) => {
+    shell.openPath(folderPath);
+  });
 
   // ----------------------自定义----------------------
   mainWindow.on('ready-to-show', () => {

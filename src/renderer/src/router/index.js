@@ -53,13 +53,35 @@ const routes = [{
           hide: false,
         }
       },
+      // {
+      //   path: '/font',
+      //   name: 'font',
+      //   component: () => import('../views/Welcome/Font.vue'),
+      //   meta: {
+      //     name: '字体效果',
+      //     key: "104",
+      //     menu: false,
+      //     hide: false,
+      //   }
+      // },
+      // {
+      //   path: '/convertImage',
+      //   name: 'convertImage',
+      //   component: () => import('../views/Welcome/ImgChange.vue'),
+      //   meta: {
+      //     name: '图片转换(node)',
+      //     key: "105",
+      //     menu: false,
+      //     hide: false,
+      //   }
+      // },
       {
-        path: '/font',
-        name: 'font',
-        component: () => import('../views/Welcome/Font.vue'),
+        path: '/convertImage2',
+        name: 'convertImage2',
+        component: () => import('../views/Welcome/ImgChange2.vue'),
         meta: {
-          name: '效果',
-          key: "104",
+          name: '图片转换(html)',
+          key: "106",
           menu: false,
           hide: false,
         }

@@ -1,25 +1,25 @@
 "use strict";
 const electron = require("electron");
-const path = require("path");
+const path$1 = require("path");
 const utils = require("@electron-toolkit/utils");
 const electronUpdater = require("electron-updater");
 const logger = require("electron-log");
-const fs = require("fs");
+const fs$1 = require("fs");
 const request$2 = require("request");
 const _ = require("underscore");
-const icon = path.join(__dirname, "../../resources/icon.png");
-const dataPath = path.join(electron.app.getPath("userData"), "data.json");
+const icon = path$1.join(__dirname, "../../resources/icon.png");
+const dataPath = path$1.join(electron.app.getPath("userData"), "data.json");
 function getLocalData(key) {
-  if (!fs.existsSync(dataPath)) {
-    fs.writeFileSync(dataPath, JSON.stringify({}), { encoding: "utf-8" });
+  if (!fs$1.existsSync(dataPath)) {
+    fs$1.writeFileSync(dataPath, JSON.stringify({}), { encoding: "utf-8" });
   }
-  let data = fs.readFileSync(dataPath, { encoding: "utf-8" });
+  let data = fs$1.readFileSync(dataPath, { encoding: "utf-8" });
   let json = JSON.parse(data);
   return json;
 }
 function setLocalData(key, value) {
   let args = [...arguments];
-  let data = fs.readFileSync(dataPath, { encoding: "utf-8" });
+  let data = fs$1.readFileSync(dataPath, { encoding: "utf-8" });
   let json = JSON.parse(data);
   if (args.length === 0 || args[0] === null) {
     json = {};
@@ -31,7 +31,7 @@ function setLocalData(key, value) {
   } else {
     json[key] = value;
   }
-  fs.writeFileSync(dataPath, JSON.stringify(json), { encoding: "utf-8" });
+  fs$1.writeFileSync(dataPath, JSON.stringify(json), { encoding: "utf-8" });
 }
 async function sleep(ms) {
   return new Promise((resolve) => {
@@ -45,7 +45,7 @@ const productName = "tools";
 async function autoUpdateInit() {
   logger.transports.file.maxSize = 1002430;
   logger.transports.file.format = "[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}]{scope} {text}";
-  logger.transports.file.resolvePath = () => path.join(electron.app.getPath("appData"), "logs/main.log");
+  logger.transports.file.resolvePath = () => path$1.join(electron.app.getPath("appData"), "logs/main.log");
   await sleep(5e3);
   electronUpdater.autoUpdater.checkForUpdates();
   electronUpdater.autoUpdater.logger = logger;
@@ -174,8 +174,8 @@ const request$1 = ({
   });
 };
 function getProxyList(data) {
-  console.log("All_VITE_KEY");
-  console.log("MAIN_VITE_KEY");
+  console.log("123");
+  console.log("123");
   return new Promise((resolve, reject) => {
     request$1({
       url: data.path,
@@ -292,6 +292,38 @@ function ping(data) {
     });
   });
 }
+require("jimp");
+require("canvas");
+const path = require("path");
+const fs = require("fs");
+const potrace = require("potrace");
+const util = require("util");
+require("png-to-ico");
+const SnowflakeID = require("snowflake-id").default;
+util.promisify(potrace.trace);
+require("webp-converter");
+const snowflakeID = new SnowflakeID({
+  mid: 42,
+  // 机器ID (0~1023)
+  offset: (2021 - 1970) * 31536e3 * 1e3
+  // 可选，设置偏移时间戳
+});
+function ensureOutputDir(outputDir) {
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+}
+async function convertImage({ inputPath, format }) {
+  try {
+    const outputPath = path.join(__dirname, "output");
+    const filename = await snowflakeID.generate();
+    const outputImgPath = path.join(outputPath, `${filename}.${format}`);
+    ensureOutputDir(outputPath);
+    return { outputImgPath, outputPath };
+  } catch (error) {
+    throw new Error("Image conversion failed: " + error.message);
+  }
+}
 require("electron");
 require("os");
 const menu = [
@@ -405,7 +437,7 @@ function createWindow() {
       icon
     } : {},
     webPreferences: {
-      preload: path.join(__dirname, "../preload/index.js"),
+      preload: path$1.join(__dirname, "../preload/index.js"),
       contextIsolation: false,
       nodeIntegration: true,
       // nodeIntegrationInWorker: true,
@@ -436,6 +468,17 @@ function createWindow() {
       console.log(error);
     }
   });
+  electron.ipcMain.handle("convert-image", async (event, { inputPath, format }) => {
+    try {
+      const outputPath = await convertImage({ inputPath, format });
+      return outputPath;
+    } catch (error) {
+      throw new Error("Image conversion failed: " + error.message);
+    }
+  });
+  electron.ipcMain.handle("open-folder", async (event, folderPath) => {
+    electron.shell.openPath(folderPath);
+  });
   mainWindow.on("ready-to-show", () => {
     mainWindow.show();
   });
@@ -448,7 +491,7 @@ function createWindow() {
   if (utils.is.dev && process.env["ELECTRON_RENDERER_URL"]) {
     mainWindow.loadURL(process.env["ELECTRON_RENDERER_URL"]);
   } else {
-    mainWindow.loadFile(path.join(__dirname, "../renderer/index.html"));
+    mainWindow.loadFile(path$1.join(__dirname, "../renderer/index.html"));
   }
 }
 electron.app.whenReady().then(() => {
